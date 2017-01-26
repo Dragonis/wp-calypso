@@ -57,6 +57,7 @@ import themes from './themes/reducer';
 import ui from './ui/reducer';
 import users from './users/reducer';
 import wordads from './wordads/reducer';
+import automatedTransferEnhancer from './automated-transfer/enhancer';
 
 /**
  * Module variables
@@ -126,6 +127,8 @@ export function createReduxStore( initialState = {} ) {
 
 	if ( 'object' === typeof window ) {
 		enhancers.push( sitesSync );
+
+		enhancers.push( automatedTransferEnhancer );
 
 		if ( window.app && window.app.isDebug ) {
 			enhancers.push( consoleDispatcher );
