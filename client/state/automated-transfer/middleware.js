@@ -11,11 +11,8 @@ import {
 const clearBrowserStorageAndRefresh = ( dispatch, { status } ) => {
 	if ( typeof window !== 'undefined' && status === 'complete' ) {
 		localStorage.clear();
-		localforage.clear().then(
-			() => window.location.reload()
-		).catch(
-			window.location.reload()
-		);
+		const reloadPage = window.location.reload.bind( window.location );
+		localforage.clear().then( reloadPage, reloadPage );
 	}
 };
 
