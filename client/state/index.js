@@ -58,6 +58,7 @@ import ui from './ui/reducer';
 import users from './users/reducer';
 import wordads from './wordads/reducer';
 import automatedTransferEnhancer from './automated-transfer/enhancer';
+import config from 'config';
 
 /**
  * Module variables
@@ -120,6 +121,10 @@ if ( typeof window === 'object' ) {
 		require( './analytics/middleware.js' ).analyticsMiddleware,
 		require( './data-layer/wpcom-api-middleware.js' ).default,
 	);
+
+	if ( config.isEnabled( 'automated-transfer' ) ) {
+		middleware.push( require( './automated-transfer/middleware.js' ).default );
+	}
 }
 
 export function createReduxStore( initialState = {} ) {
@@ -128,7 +133,10 @@ export function createReduxStore( initialState = {} ) {
 	if ( 'object' === typeof window ) {
 		enhancers.push( sitesSync );
 
-		enhancers.push( automatedTransferEnhancer );
+		//TEMPORARY AT FLOW FIX, NOT INTENDED FOR PROD
+		if ( config.isEnabled( 'automated-transfer' ) ) {
+			enhancers.push( automatedTransferEnhancer );
+		}
 
 		if ( window.app && window.app.isDebug ) {
 			enhancers.push( consoleDispatcher );
