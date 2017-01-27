@@ -14,6 +14,7 @@ import {
 	THEME_TRANSFER_STATUS_RECEIVE
 } from 'state/action-types';
 import { getSelectedSiteId } from 'state/ui/selectors';
+import config from 'config';
 
 const WHITELIST = [
 	AUTOMATED_TRANSFER_ELIGIBILITY_REQUEST,
@@ -36,6 +37,11 @@ const WHITELIST = [
  */
 export const automatedTransferEnhancer = createStore => ( reducer, initialState, enhancer ) => {
 	const store = createStore( reducer, initialState, enhancer );
+	const isDevOrWPCalypso = [ 'development', 'wpcalypso' ].indexOf( config( 'env' ) ) > -1;
+
+	if ( ! ( config.isEnabled( 'automated-transfer' ) && isDevOrWPCalypso ) ) {
+		return store;
+	}
 
 	return {
 		...store,

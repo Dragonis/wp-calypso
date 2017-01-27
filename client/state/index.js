@@ -113,8 +113,7 @@ export const reducer = combineReducers( {
 	wordads,
 } );
 
-const environment = config( 'env' );
-const isDevOrWPCalypso = [ 'development', 'wpcalypso' ].indexOf( environment ) > -1;
+const isDevOrWPCalypso = [ 'development', 'wpcalypso' ].indexOf( config( 'env' ) ) > -1;
 const middleware = [ thunkMiddleware, noticesMiddleware ];
 
 if ( typeof window === 'object' ) {
