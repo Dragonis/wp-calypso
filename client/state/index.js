@@ -113,6 +113,8 @@ export const reducer = combineReducers( {
 	wordads,
 } );
 
+const environment = config( 'env' );
+const isDevOrWPCalypso = [ 'development', 'wpcalypso' ].indexOf( environment ) > -1;
 const middleware = [ thunkMiddleware, noticesMiddleware ];
 
 if ( typeof window === 'object' ) {
@@ -122,7 +124,8 @@ if ( typeof window === 'object' ) {
 		require( './data-layer/wpcom-api-middleware.js' ).default,
 	);
 
-	if ( config.isEnabled( 'automated-transfer' ) ) {
+	//TEMPORARY AT FLOW FIX, NOT INTENDED FOR PROD
+	if ( config.isEnabled( 'automated-transfer' ) && isDevOrWPCalypso ) {
 		middleware.push( require( './automated-transfer/middleware.js' ).default );
 	}
 }
@@ -134,7 +137,7 @@ export function createReduxStore( initialState = {} ) {
 		enhancers.push( sitesSync );
 
 		//TEMPORARY AT FLOW FIX, NOT INTENDED FOR PROD
-		if ( config.isEnabled( 'automated-transfer' ) ) {
+		if ( config.isEnabled( 'automated-transfer' ) && isDevOrWPCalypso ) {
 			enhancers.push( automatedTransferEnhancer );
 		}
 
