@@ -303,15 +303,6 @@ export const queries = ( () => {
 	}
 
 	return createReducer( {}, {
-		[ ACTIVE_THEME_REQUEST_SUCCESS ]: ( state, { siteId, theme } ) => {
-			// FIXME: The siteId here is always specific to a site (and never equals 'wpcom')
-			// However, for non-Jetpack sites, we want to store the theme in the 'wpcom' subtree
-			// while for Jetpack sites, we want to store it in the JP site specific one.
-			// OTOH, we can't change the action to pass siteIdOrWpcom, since the activeThemes
-			// reducer really needs the actual siteId (and not 'wpcom'). So maybe we need to pass
-			// an additional isJetpack field or something.
-			return applyToManager( state, 'wpcom', 'receive', true, theme, { patch: true } );
-		},
 		[ THEMES_REQUEST_SUCCESS ]: ( state, { siteId, query, themes, found } ) => {
 			return applyToManager( state, siteId, 'receive', true, themes, { query, found } );
 		},
