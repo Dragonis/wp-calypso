@@ -33,9 +33,10 @@ function createCart( callback, dependencies, data ) {
 	const { domainItem, themeItem } = data;
 
 	if ( designType === 'domain' ) {
-		// TODO: Find a way to create cart without a site
-		// SignupCart.addToCart depends on the site's slug
-		callback( undefined, [ null, null, domainItem, themeItem ] );
+		const cartKey = 'no-site';
+		const providedDependencies = [ null, null, domainItem, themeItem ];
+
+		SignupCart.addToCart( cartKey, [ domainItem ], error => callback( error, providedDependencies ) );
 	} else {
 		createSiteWithCart( callback, dependencies, data );
 	}
