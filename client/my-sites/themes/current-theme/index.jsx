@@ -35,7 +35,7 @@ class CurrentTheme extends Component {
 		currentTheme: PropTypes.object
 	}
 
-	trackClick = trackClick.bind( null, 'current theme' )
+	trackClick = ( event ) => trackClick( 'current theme', event )
 
 	render() {
 		const { currentTheme, siteId, translate } = this.props,
